@@ -1,0 +1,71 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Curriculum Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for a cleaner look */
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <!-- Main Container -->
+    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-lg w-full text-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Welcome to the Portal</h1>
+        <p class="text-gray-600 mb-8">Please select your role to continue to the Smart Curriculum & Attendance system.</p>
+
+        <!-- Options Container -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Student Card -->
+            <div id="student-card" class="bg-blue-100 p-6 rounded-2xl shadow-md transition-transform transform hover:scale-105 cursor-pointer flex flex-col items-center justify-center"
+                 onclick="handleSelection('student')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6.256c.55 0 1.055-.262 1.353-.708l1.04-1.56a.75.75 0 00-.022-.988l-2.614-2.822c-.628-.679-1.569-.887-2.394-.653l-.534.152a2.25 2.25 0 01-1.314-2.438l.635-2.222c.214-.75-.386-1.5-1.127-1.5H9.75c-.741 0-1.341.75-.989 1.581L8 15.75h1.25a.75.75 0 010 1.5H8.5l-.271-.948a2.25 2.25 0 00-1.285-1.428l-2.584-.738c-1.146-.327-2.39.42-2.716 1.566L1.5 17.25c-.27.947.585 1.83 1.5 1.83h3.75" />
+                </svg>
+                <h2 class="text-xl font-semibold text-blue-800 mb-2">Student</h2>
+                <p class="text-sm text-blue-700">Access curriculum, attendance, and grades.</p>
+            </div>
+
+            <!-- Administrator Card -->
+            <div id="admin-card" class="bg-green-100 p-6 rounded-2xl shadow-md transition-transform transform hover:scale-105 cursor-pointer flex flex-col items-center justify-center"
+                 onclick="handleSelection('administrator')">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.255 2.981-.884.975-1.556-1.07-3.23-2.614-2.29zM15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <h2 class="text-xl font-semibold text-green-800 mb-2">Administrator</h2>
+                <p class="text-sm text-green-700">Manage students, data, and attendance.</p>
+            </div>
+
+        </div>
+
+        <!-- Feedback Message -->
+        <div id="feedback-message" class="mt-8 p-4 bg-gray-200 text-gray-700 rounded-lg hidden"></div>
+
+    </div>
+
+    <script>
+        function handleSelection(role) {
+            const feedbackMessage = document.getElementById('feedback-message');
+            feedbackMessage.classList.remove('hidden');
+
+            if (role === 'student') {
+                feedbackMessage.textContent = 'Navigating to Student Portal...';
+                // This is the line that redirects to your local dashboard.html file
+                window.location.href = 'dashboard.html';
+            } else if (role === 'administrator') {
+                feedbackMessage.textContent = 'Navigating to Administrator Dashboard...';
+                // This will redirect the user to a different page for administrators
+                window.location.href = 'admin-dashboard.html'; 
+            }
+        }
+    </script>
+
+</body>
+</html>
