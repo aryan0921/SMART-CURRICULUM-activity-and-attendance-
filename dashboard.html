@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VeriAttend | Student Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons Library -->
+    <script src="https://unpkg.com/phosphor-icons"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f8fc;
+        }
+        .modal-backdrop { background-color: rgba(0,0,0,0.7); }
+        .checkmark-circle {
+            width: 100px; height: 100px;
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .checkmark-circle .background {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: #22c55e;
+            position: absolute;
+            animation: scaleIn .5s forwards;
+        }
+        .checkmark-circle .checkmark {
+            width: 40px; height: 80px;
+            transform: scaleX(-1) rotate(135deg);
+            position: absolute;
+            top: 5px; left: 30px;
+            transform-origin: left top;
+            border-right: 10px solid white;
+            border-top: 10px solid white;
+            content: '';
+            opacity: 0;
+            animation: drawCheck .5s .5s forwards;
+        }
+        @keyframes scaleIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        @keyframes drawCheck { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 40px; height: 80px; opacity: 1; } }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #FFF;
+            border-bottom-color: #4f46e5;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="max-w-md mx-auto bg-white">
+
+    <div class="container mx-auto pb-20">
+        <!-- Header -->
+        <header class="flex justify-between items-center p-4 shadow-sm">
+            <div>
+                <p class="text-sm text-gray-500">FY B.Tech, CSE</p>
+                <h1 class="text-xl font-bold text-gray-800">Aryan Bhosale</h1>
+            </div>
+            <img src="https://placehold.co/48x48/e0e7ff/4f46e5?text=PS" alt="User Avatar" class="w-12 h-12 rounded-full ring-2 ring-indigo-200">
+        </header>
+
+        <!-- Main Content -->
+        <main class="p-4 space-y-5">
+
+            <!-- Mark Attendance Card -->
+            <div class="bg-indigo-600 text-white p-6 rounded-2xl shadow-lg flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold mb-1">Next Class: Physics</h2>
+                    <p class="text-indigo-200 text-sm">Room 301 | 05:30 PM</p>
+                </div>
+                <button id="markAttendanceBtn" class="bg-white text-indigo-600 font-bold py-3 px-5 rounded-xl shadow-md hover:bg-indigo-50 transition-transform transform hover:scale-105 flex items-center gap-2">
+                    <i class="ph-qr-code text-2xl"></i>
+                    <span>Mark Present</span>
+                </button>
+            </div>
+
+            <!-- Attendance Overview Card -->
+            <div class="bg-gray-50 p-5 rounded-2xl">
+                <h3 class="text-base font-semibold text-gray-800 mb-3">Attendance Overview</h3>
+                <div class="flex justify-around text-center">
+                    <div>
+                        <p class="text-2xl font-bold text-green-600">82%</p>
+                        <p class="text-xs text-gray-500">Overall</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-red-500">68%</p>
+                        <p class="text-xs text-gray-500">Chemistry</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-green-600">91%</p>
+                        <p class="text-xs text-gray-500">Workshop</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Schedule -->
+            <div class="p-1">
+                <h3 class="text-base font-semibold text-gray-800 mb-3">Today's Schedule</h3>
+                <div class="space-y-3">
+                    <!-- Class 1 -->
+                    <div class="flex items-center bg-green-50 p-3 rounded-lg">
+                        <div class="bg-green-200 p-2 rounded-full mr-4"><i class="ph-check-circle text-2xl text-green-700"></i></div>
+                        <div class="flex-grow">
+                            <p class="font-semibold text-gray-700">Engineering Mathematics</p>
+                            <p class="text-sm text-gray-500">9:00 AM - 10:00 AM</p>
+                        </div>
+                        <span class="text-sm font-semibold text-green-700">Attended</span>
+                    </div>
+                    <!-- Class 2 -->
+                    <div class="flex items-center bg-orange-50 p-3 rounded-lg">
+                        <div class="bg-orange-200 p-2 rounded-full mr-4"><i class="ph-clock text-2xl text-orange-700"></i></div>
+                        <div class="flex-grow">
+                            <p class="font-semibold text-gray-700">Engineering Physics</p>
+                            <p class="text-sm text-gray-500">10:15 AM - 11:15 AM</p>
+                        </div>
+                         <span class="text-sm font-semibold text-orange-700">Upcoming</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Verification Modal -->
+    <div id="verificationModal" class="fixed inset-0 z-50 flex items-center justify-center modal-backdrop hidden">
+        <div id="modalContent" class="bg-white p-8 rounded-2xl shadow-2xl text-center max-w-xs w-full mx-4 relative transform transition-all duration-300 scale-95 opacity-0">
+            <!-- Step 1: Geolocation -->
+            <div id="geoStep" class="flex flex-col items-center">
+                <div class="spinner"></div>
+                <h2 class="text-xl font-bold mt-4">Verifying Location</h2>
+                <p class="text-gray-500 mt-1">Please ensure you are in the classroom.</p>
+            </div>
+            <!-- Step 2: QR Scan -->
+            <div id="qrStep" class="hidden flex-col items-center">
+                 <i class="ph-qr-code-fill text-6xl text-indigo-600"></i>
+                <h2 class="text-xl font-bold mt-4">Scan QR Code</h2>
+                <p class="text-gray-500 mt-1">Point your camera at the code on the screen.</p>
+            </div>
+             <!-- Step 3: Selfie -->
+            <div id="selfieStep" class="hidden flex-col items-center">
+                <i class="ph-user-circle-fill text-6xl text-indigo-600"></i>
+                <h2 class="text-xl font-bold mt-4">Selfie Verification</h2>
+                <p class="text-gray-500 mt-1">Position your face in the center of the frame.</p>
+            </div>
+            <!-- Step 4: Success -->
+            <div id="successStep" class="hidden flex-col items-center">
+                <div class="checkmark-circle"><div class="background"></div><div class="checkmark"></div></div>
+                <h2 class="text-xl font-bold mt-4">Attendance Marked!</h2>
+                <p class="text-gray-500 mt-1">You are all set for the Physics lecture.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const markAttendanceBtn = document.getElementById('markAttendanceBtn');
+            const verificationModal = document.getElementById('verificationModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            const steps = {
+                geo: document.getElementById('geoStep'),
+                qr: document.getElementById('qrStep'),
+                selfie: document.getElementById('selfieStep'),
+                success: document.getElementById('successStep')
+            };
+
+            const showStep = (stepName) => {
+                Object.values(steps).forEach(step => step.classList.add('hidden'));
+                steps[stepName].classList.remove('hidden');
+            };
+            
+            const openModal = () => {
+                verificationModal.classList.remove('hidden');
+                setTimeout(() => {
+                    modalContent.classList.remove('scale-95', 'opacity-0');
+                }, 50); // Start animation after modal is visible
+            };
+            
+            const closeModal = () => {
+                modalContent.classList.add('scale-95', 'opacity-0');
+                 setTimeout(() => {
+                    verificationModal.classList.add('hidden');
+                }, 300); // Wait for animation to finish
+            };
+
+            markAttendanceBtn.addEventListener('click', () => {
+                openModal();
+                showStep('geo');
+
+                // Simulate verification process
+                setTimeout(() => { // Step 1: Geo-location check
+                    showStep('qr');
+                }, 2000);
+
+                setTimeout(() => { // Step 2: QR Scan
+                    showStep('selfie');
+                }, 4000);
+
+                setTimeout(() => { // Step 3: Selfie verification
+                    showStep('success');
+                }, 6000);
+                
+                setTimeout(() => { // Step 4: Close modal after success
+                    closeModal();
+                }, 8000);
+            });
+        });
+    </script>
+</body>
+</html>
